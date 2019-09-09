@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	da "github.com/kechako/go-yahoo-da"
-	"golang.org/x/xerrors"
 )
 
 // A Akari represents a generator of Akari favorite statement.
@@ -40,7 +39,7 @@ func (a *Akari) Say(ctx context.Context, text string) (string, error) {
 func (a *Akari) findFavorite(ctx context.Context, text string) (string, error) {
 	res, err := a.client.Parse(ctx, text)
 	if err != nil {
-		return "", xerrors.Errorf("fail to parse the text: %w", err)
+		return "", fmt.Errorf("fail to parse the text: %w", err)
 	}
 
 	if len(res.Results) == 0 || len(res.Results[0].Chunks) == 0 {
