@@ -4,6 +4,7 @@ package akarifavo
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/kechako/go-yahoo/da"
 )
@@ -57,7 +58,7 @@ func (a *Akari) findFavorite(ctx context.Context, text string) (string, error) {
 
 		if favoriteID < 0 {
 			for i, t := range chunk.Tokens {
-				if (t.Surface() == "大好き" || t.Surface() == "好き") && t.PartOfSpeech() == "形容動詞" {
+				if isFavoriteToken(t) {
 					favoChunk = chunk
 					favoMorphemIndex = i
 					favoriteID = chunk.ID
@@ -121,4 +122,12 @@ loop:
 	}
 
 	return favorite, nil
+}
+
+func isFavoriteToken(t da.Token) bool {
+	s := t.Surface()
+	pos := t.PartOfSpeech()
+
+	return (strings.HasPrefix(s, "大好き") || strings.HasPrefix(s, "好き")) &&
+		(pos == "形容詞" || pos == "形容動詞")
 }
