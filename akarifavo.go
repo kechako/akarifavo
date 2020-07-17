@@ -1,10 +1,11 @@
+// Package akarifavo is a generate Akari favorite statement from the text.
 package akarifavo
 
 import (
 	"context"
 	"fmt"
 
-	da "github.com/kechako/go-yahoo-da"
+	"github.com/kechako/go-yahoo/da"
 )
 
 // A Akari represents a generator of Akari favorite statement.
@@ -15,7 +16,7 @@ type Akari struct {
 // New returns a new *Akari.
 func New(appID string) *Akari {
 	return &Akari{
-		client: da.NewClient(appID),
+		client: da.New(appID),
 	}
 }
 
@@ -42,7 +43,7 @@ func (a *Akari) findFavorite(ctx context.Context, text string) (string, error) {
 		return "", fmt.Errorf("fail to parse the text: %w", err)
 	}
 
-	if len(res.Results) == 0 || len(res.Results[0].Chunks) == 0 {
+	if len(res.Chunks) == 0 {
 		return "", nil
 	}
 
@@ -51,12 +52,12 @@ func (a *Akari) findFavorite(ctx context.Context, text string) (string, error) {
 	favoriteID := -1
 
 	chunkMap := make(map[int][]da.Chunk)
-	for _, chunk := range res.Results[0].Chunks {
-		chunkMap[chunk.Dependency] = append(chunkMap[chunk.Dependency], chunk)
+	for _, chunk := range res.Chunks {
+		chunkMap[chunk.Head] = append(chunkMap[chunk.Head], chunk)
 
 		if favoriteID < 0 {
-			for i, m := range chunk.Morphemes {
-				if (m.Surface == "大好き" || m.Surface == "好き") && m.POS == "形容動詞" {
+			for i, t := range chunk.Tokens {
+				if (t.Surface() == "大好き" || t.Surface() == "好き") && t.PartOfSpeech() == "形容動詞" {
 					favoChunk = chunk
 					favoMorphemIndex = i
 					favoriteID = chunk.ID
@@ -78,12 +79,12 @@ func (a *Akari) findFavorite(ctx context.Context, text string) (string, error) {
 
 		var favorite string
 		for i := favoMorphemIndex - 1; i >= 0; i-- {
-			m := favoChunk.Morphemes[i]
-			if m.POS == "助詞" {
+			t := favoChunk.Tokens[i]
+			if t.PartOfSpeech() == "助詞" {
 				continue
 			}
 
-			favorite = m.Surface
+			favorite = t.Surface()
 			break
 		}
 
@@ -93,27 +94,27 @@ func (a *Akari) findFavorite(ctx context.Context, text string) (string, error) {
 	var favorite string
 loop:
 	for _, dep := range deps {
-		mlen := len(dep.Morphemes)
-		if mlen < 2 {
+		tlen := len(dep.Tokens)
+		if tlen < 2 {
 			continue
 		}
 
-		lastWord := dep.Morphemes[mlen-1]
-		if lastWord.POS != "助詞" {
+		lastWord := dep.Tokens[tlen-1]
+		if lastWord.PartOfSpeech() != "助詞" {
 			continue
 		}
 
-		switch lastWord.Surface {
+		switch lastWord.Surface() {
 		case "の":
-			if dep.Morphemes[mlen-2].POS == "動詞" {
+			if dep.Tokens[tlen-2].PartOfSpeech() == "動詞" {
 				favorite = dep.String()
 				break loop
 			}
 		case "が", "も", "を":
 			favorite = ""
-			for i := 0; i < mlen-1; i++ {
-				m := dep.Morphemes[i]
-				favorite += m.Surface
+			for i := 0; i < tlen-1; i++ {
+				t := dep.Tokens[i]
+				favorite += t.Surface()
 			}
 			break loop
 		}

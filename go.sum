@@ -1,3 +1,11 @@
-github.com/kechako/go-yahoo-da v0.1.1 h1:7LeC7HkL6dwzWAURu1MG7stY3kUe22LFBp5fciwi/iE=
-github.com/kechako/go-yahoo-da v0.1.1/go.mod h1:DzA97srbm1Y+33lwP98saYLItP9glOCPbsS0ELT11H4=
+github.com/google/go-cmp v0.4.1 h1:/exdXoGamhu5ONeUJH0deniYLWYvQwW66yvlfiiKTu0=
+github.com/google/go-cmp v0.4.1/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
+github.com/google/uuid v1.1.1 h1:Gkbcsh/GbpXz7lPftLA3P6TYMwjCLYm83jiFQZF/3gY=
+github.com/google/uuid v1.1.1/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/kechako/go-jsonrpc v0.1.0 h1:h8InTJuDtgvtGvdkGHu5CnG/6KeEkdJXr6Y332thYyA=
+github.com/kechako/go-jsonrpc v0.1.0/go.mod h1:4SMryfo9GYdJKcbeAyfs1nMVM0UAZV07NbS/W1vjMvU=
+github.com/kechako/go-yahoo v0.0.2 h1:eVemoOa3h+PhQCLBoxZGHK3NVrpi9Liytch4EdzmaNg=
+github.com/kechako/go-yahoo v0.0.2/go.mod h1:QqjX71x+jVhrhoy5Lhb4kNwPSD/jqxH3rYwStZa28h4=
 github.com/kechako/mktree v0.1.0/go.mod h1:/jDEi7YiJEGeK7XYE7PQ3fZPEyx+zSWklV3RXnFxqA4=
+golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543 h1:E7g+9GITq07hpfrRu66IVDexMakfv52eLZ2CXBWiKr4=
+golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543/go.mod h1:I/5z698sn9Ka8TeJc9MKroUUfqBBauWjQqLJ2OPfmY0=
